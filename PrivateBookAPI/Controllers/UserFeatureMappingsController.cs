@@ -132,6 +132,24 @@ namespace PrivateBookAPI.Controllers
             return Ok(features);
         }
 
+        [HttpGet("AddFeaturesToUser/{userId}", Name = "AddFeaturesToUser")]
+        public async Task<IActionResult> AddFeaturesToUser(int userId)
+        {
+                var features = _context.Features;
+                foreach(var feature in features)
+                {
+                    UserFeatureMapping mapping = new UserFeatureMapping()
+                    {
+                        FeatureId = feature.FeatureId,
+                        UserId = userId
+                    };
+                    _context.UserFeatureMappings.Add(mapping);
+                }
+
+            await _context.SaveChangesAsync();
+            return this.Ok();
+        }
+
         private bool UserFeatureMappingExists(int id)
         {
             return _context.UserFeatureMappings.Any(e => e.MappingId == id);

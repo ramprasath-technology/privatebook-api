@@ -27,7 +27,12 @@ namespace PrivateBookAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PrivateBookContext>(option => option.UseSqlServer(connectionString));
 
@@ -42,6 +47,7 @@ namespace PrivateBookAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("MyPolicy");
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

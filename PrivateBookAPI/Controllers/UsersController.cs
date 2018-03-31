@@ -93,25 +93,12 @@ namespace PrivateBookAPI.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                /*
-                byte[] salt;
-                new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-                var pbkdf2 = new Rfc2898DeriveBytes(user.Password, salt, 10000);
-                byte[] hash = pbkdf2.GetBytes(20);
-                byte[] hashBytes = new byte[36];
-                Array.Copy(salt, 0, hashBytes, 0, 16);
-                Array.Copy(hash, 0, hashBytes, 16, 20);
-                string savedPasswordHash = Convert.ToBase64String(hashBytes);
 
-                user.Password = savedPasswordHash;
-                user.Salt = salt;
-                */
                 MD5 md5Hash = MD5.Create();
                 string hash = GetMd5Hash(md5Hash, user.Password);
                 user.Password = hash;
-
-
-                _context.Users.Add(user);
+                
+                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
                 return CreatedAtAction("GetUser", new { id = user.UserId }, user);
@@ -165,21 +152,6 @@ namespace PrivateBookAPI.Controllers
             }
 
             string savedPasswordHash = user.Password;
-            /*
-            byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
-
-            byte[] salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
-            var pbkdf2 = new Rfc2898DeriveBytes(user.Password, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            bool ok = true;
-            for(int i = 0; i < 20; i++)
-            {
-                if (hashBytes[i + 16] != hash[i])
-                    ok = false;
-            }
-            */
             MD5 md5Hash = MD5.Create();
             bool authentic = VerifyMd5Hash(md5Hash, login.Password, savedPasswordHash);
 
