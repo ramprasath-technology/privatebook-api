@@ -9,6 +9,8 @@ namespace PrivateBookAPI.Data
 {
     public class User
     {
+        
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
@@ -22,5 +24,6 @@ namespace PrivateBookAPI.Data
         [Required]
         public string Password { get; set; }
         public byte[] Salt { get; set; }
+
     }
 }

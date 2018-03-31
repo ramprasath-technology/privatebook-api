@@ -23,9 +23,6 @@ namespace PrivateBookAPI.Controllers
             this.configuration = configuration;
         }
 
-
-
-
         // POST: api/Weather
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Coordinates coordinates)
@@ -57,7 +54,6 @@ namespace PrivateBookAPI.Controllers
                     return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
                 }
             }
-
         }
 
         // PUT: api/Weather/5
