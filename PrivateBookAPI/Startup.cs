@@ -44,10 +44,12 @@ namespace PrivateBookAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseCors("MyPolicy");
             }
 
             app.UseCors("MyPolicy");
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

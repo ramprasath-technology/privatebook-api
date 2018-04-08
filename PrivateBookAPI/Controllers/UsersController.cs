@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -137,15 +138,16 @@ namespace PrivateBookAPI.Controllers
             return _context.Users.Any(e => e.UserId == id);
         }
 
-        [HttpPost("Login", Name = "Login")]
-        public async Task<IActionResult> Login([FromBody] Login login)
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginUser([FromBody] Login login)
         {
+         
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.Email == login.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Email == login.Email);
             if(user == null)
             {
                 return NotFound();
@@ -155,10 +157,10 @@ namespace PrivateBookAPI.Controllers
             MD5 md5Hash = MD5.Create();
             bool authentic = VerifyMd5Hash(md5Hash, login.Password, savedPasswordHash);
 
-
-
-
-            return this.Ok();
+            if (authentic)
+                return this.Ok(user.UserId);
+            else
+                return this.Ok(-1);
         }
 
         private string GetMd5Hash(MD5 md5Hash, string input)

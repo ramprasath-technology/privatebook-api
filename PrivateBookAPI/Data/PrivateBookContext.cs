@@ -17,5 +17,6 @@ namespace PrivateBookAPI.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<UserFeatureMapping> UserFeatureMappings { get; set; }
+        public DbSet<Goals> Goals { get; set; }
     }
 }
