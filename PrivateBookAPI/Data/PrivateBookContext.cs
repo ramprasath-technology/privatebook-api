@@ -18,5 +18,6 @@ namespace PrivateBookAPI.Data
         public DbSet<Feature> Features { get; set; }
         public DbSet<UserFeatureMapping> UserFeatureMappings { get; set; }
         public DbSet<Goals> Goals { get; set; }
+        public DbSet<Event> Events { get; set; }
     }
 }
