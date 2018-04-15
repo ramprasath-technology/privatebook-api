@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrivateBookAPI.Data;
+using PrivateBookAPI.Data.DTO;
 
 namespace PrivateBookAPI.Controllers
 {
@@ -126,6 +127,19 @@ namespace PrivateBookAPI.Controllers
             }
 
             var events = await _context.Events.Where(x => x.UserId == userId && x.Time >= DateTime.Today).ToListAsync();
+
+            return Ok(events);
+        }
+
+        [HttpGet("search/{startDate}/{endDate}/{userId}", Name = "SearchEvents")]
+        public async Task<IActionResult> SearchEvents(DateTime startDate, DateTime endDate, int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //var events = await _context.Events.Where(x => x.UserId == searchTerm.UserId && x.Time >= searchTerm.StartDate && x.Time <= searchTerm.EndDate).ToListAsync();
+            var events = await _context.Events.Where(x => x.UserId == userId).ToListAsync();
 
             return Ok(events);
         }

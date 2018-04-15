@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PrivateBookAPI.Data;
 
 namespace PrivateBookAPI.Data
 {
@@ -19,5 +20,6 @@ namespace PrivateBookAPI.Data
         public DbSet<UserFeatureMapping> UserFeatureMappings { get; set; }
         public DbSet<Goals> Goals { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<PrivateBookAPI.Data.Diary> Diary { get; set; }
     }
 }

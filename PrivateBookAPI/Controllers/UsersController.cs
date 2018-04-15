@@ -138,7 +138,7 @@ namespace PrivateBookAPI.Controllers
             return _context.Users.Any(e => e.UserId == id);
         }
 
-        [HttpPost("Login")]
+        [HttpPost("Login", Name = "LoginUser")]
         public async Task<IActionResult> LoginUser([FromBody] Login login)
         {
          

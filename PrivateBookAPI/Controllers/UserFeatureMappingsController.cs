@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrivateBookAPI.Data;
+using PrivateBookAPI.Data.DTO;
 
 namespace PrivateBookAPI.Controllers
 {
@@ -145,6 +146,34 @@ namespace PrivateBookAPI.Controllers
                     };
                     _context.UserFeatureMappings.Add(mapping);
                 }
+
+            await _context.SaveChangesAsync();
+            return this.Ok();
+        }
+
+        [HttpPost("UserFeatureToAdd", Name = "AddFeatureToUser")]
+        public async Task<IActionResult> AddFeatureToUser([FromBody] UserFeatures userFeature)
+        {
+            UserFeatureMapping mapping = new UserFeatureMapping()
+            {
+                FeatureId = userFeature.FeatureId,
+                UserId = userFeature.UserId
+            };
+
+            _context.Add(mapping);
+            await _context.SaveChangesAsync();
+            return this.Ok();
+        }
+
+        [HttpPost("UserFeatureToRemove", Name = "RemoveFeatureForUser")]
+        public async Task<IActionResult> RemoveFeatureForUser([FromBody] UserFeatures userFeature)
+        {
+            UserFeatureMapping mapping = await _context.UserFeatureMappings.FirstOrDefaultAsync(x => x.UserId == userFeature.UserId && x.FeatureId == userFeature.FeatureId);
+
+            if(mapping != null)
+            {
+                _context.UserFeatureMappings.Remove(mapping);
+            }
 
             await _context.SaveChangesAsync();
             return this.Ok();
