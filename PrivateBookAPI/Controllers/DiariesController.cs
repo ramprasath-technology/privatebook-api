@@ -117,6 +117,20 @@ namespace PrivateBookAPI.Controllers
             return Ok(diary);
         }
 
+        [HttpGet("GetDiaryEntriesByUser/{userId}", Name = "GetEntriesByUser")]
+        public async Task<IActionResult> GetEntriesByUser([FromRoute] int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var diaryEntries = await _context.Diary.Where(x => x.UserId == userId).OrderByDescending(x => x.EntryId).ToListAsync();
+
+            return this.Ok(diaryEntries);
+        }
+
+
         private bool DiaryExists(int id)
         {
             return _context.Diary.Any(e => e.EntryId == id);
