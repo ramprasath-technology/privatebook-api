@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using PrivateBookAPI.Data;
 
 namespace PrivateBookAPI.Controllers
@@ -14,10 +17,12 @@ namespace PrivateBookAPI.Controllers
     public class StocksController : Controller
     {
         private readonly PrivateBookContext _context;
+        private IConfiguration configuration;
 
-        public StocksController(PrivateBookContext context)
+        public StocksController(PrivateBookContext context, IConfiguration configuration)
         {
             _context = context;
+            this.configuration = configuration;
         }
 
         // GET: api/Stocks
@@ -90,6 +95,12 @@ namespace PrivateBookAPI.Controllers
                 return BadRequest(ModelState);
             }
 
+            bool currentStocks =  _context.Stocks.Any(x => x.UserId == stock.UserId && x.StockSymbol == stock.StockSymbol);
+            if(currentStocks == true)
+            {
+                return Ok("Already Exists");
+            }
+
             _context.Stocks.Add(stock);
             await _context.SaveChangesAsync();
 
@@ -115,6 +126,45 @@ namespace PrivateBookAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(stock);
+        }
+
+         
+        [HttpGet("StockValue/{symbol}", Name = "GetStockDetails")]
+        public async Task<IActionResult> GetStockDetails(string symbol)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://www.alphavantage.co");
+                    string key = configuration.GetValue<string>("APIKeys:AlphaVantage");
+                    var response = await client.GetAsync($"/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol={symbol}&apikey={key}");
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    var jObj = JObject.Parse(stringResult);
+                    //var metadata = jObj["Meta Data"].ToObject<Dictionary<string, string>>();
+                    //var timeseries = jObj["Time Series (1min)"].ToObject<Dictionary<string, Dictionary<string, string>>>();
+                    // return this.Ok(timeseries);
+                    return this.Ok(jObj);
+                }
+            }
+            catch(Exception ex)
+            {
+                
+            }          
+            return this.BadRequest();
+        }
+
+        [HttpGet("StocksForUser/{userId}", Name = "GetStockByUser")]
+        public async Task<IActionResult> GetStockByUser(int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var stocks = await _context.Stocks.Where(x => x.UserId == userId).ToListAsync();
+
+            return this.Ok(stocks);
         }
 
         private bool StockExists(int id)
