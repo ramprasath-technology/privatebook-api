@@ -15,15 +15,15 @@ namespace PrivateBookAPI.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         [Required]
-        public string FirstName { get; set; }
-        [Required]
-        public string LastName { get; set; }
+        public string Name { get; set; }
         [Required]
         public string Email { get; set; }
-        public Nullable<int> Phone { get; set; }
         [Required]
         public string Password { get; set; }
-        public byte[] Salt { get; set; }
+        [Required]
+        public string SecurityQuestion { get; set; }
+        [Required]
+        public string SecurityAnswer { get; set; }
 
     }
 }
