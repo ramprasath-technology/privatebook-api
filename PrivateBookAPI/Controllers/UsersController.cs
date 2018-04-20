@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrivateBookAPI.Data;
+using PrivateBookAPI.Data.DTO;
 
 namespace PrivateBookAPI.Controllers
 {
@@ -110,6 +111,55 @@ namespace PrivateBookAPI.Controllers
                 throw ex;
             }
             
+        }
+
+        [HttpGet("EmailVerification/{email}", Name = "GetUserByEmail")]
+        public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await this._context.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            return this.Ok(user);
+        }
+
+        [HttpGet("SecurityQuestion/{id}", Name = "GetSecurityQuestion")]
+        public async Task<IActionResult> GetSecurityQuestion([FromRoute] int id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await this._context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+            return this.Ok(user.SecurityQuestion);
+        }
+
+        [HttpPost("PasswordReset", Name = "ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordReset password)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await this._context.Users.FirstOrDefaultAsync(x => x.UserId == password.UserId);
+            if(password.SecurityAnswer.Trim().Equals(user.SecurityAnswer))
+            {
+                MD5 md5Hash = MD5.Create();
+                string hash = GetMd5Hash(md5Hash, password.NewPassword);
+                user.Password = hash;
+
+                this._context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return this.Ok();
+            }
+            return this.BadRequest();
         }
 
         // DELETE: api/Users/5
