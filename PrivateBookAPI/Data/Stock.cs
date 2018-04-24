@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data
 {
+    // Class for stock
     public partial class Stock
     {
         [Key]

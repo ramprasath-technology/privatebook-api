@@ -24,6 +24,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Weather
+        // Get weather details according using geographic coordinates
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Coordinates coordinates)
         {
@@ -54,18 +55,6 @@ namespace PrivateBookAPI.Controllers
                     return BadRequest($"Error getting weather from OpenWeather: {httpRequestException.Message}");
                 }
             }
-        }
-
-        // PUT: api/Weather/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

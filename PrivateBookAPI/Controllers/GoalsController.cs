@@ -21,6 +21,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Goals
+        // Get all goals
         [HttpGet]
         public IEnumerable<Goals> GetGoals()
         {
@@ -28,6 +29,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Goals/5
+        // Get goal by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGoals([FromRoute] int id)
         {
@@ -47,6 +49,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // PUT: api/Goals/5
+        // Update goal
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGoals([FromRoute] int id, [FromBody] Goals goals)
         {
@@ -82,6 +85,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Goals
+        // Save a new goal
         [HttpPost]
         public async Task<IActionResult> PostGoals([FromBody] Goals goals)
         {
@@ -97,6 +101,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/Goals/5
+        //Delete a goal
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGoals([FromRoute] int id)
         {
@@ -117,6 +122,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(goals);
         }
 
+        // Get all goals for a user
         [HttpGet("user/{userId}", Name = "GetGoalsByUser")]
         public async Task<IActionResult> GetGoalsByUser(int userId)
         {
@@ -130,6 +136,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(goals);
         }
 
+        //Check if a goal exists
         private bool GoalsExists(int id)
         {
             return _context.Goals.Any(e => e.GoalId == id);

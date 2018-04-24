@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data
 {
+    // Class for user
     public class User
     {
-        
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }

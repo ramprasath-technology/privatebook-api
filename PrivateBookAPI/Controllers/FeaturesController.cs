@@ -21,6 +21,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Features
+        // Get all features
         [HttpGet]
         public IEnumerable<Feature> GetFeatures()
         {
@@ -28,6 +29,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Features/5
+        // Get feature by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFeature([FromRoute] int id)
         {
@@ -82,6 +84,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Features
+        // Post a new feature
         [HttpPost]
         public async Task<IActionResult> PostFeature([FromBody] Feature feature)
         {
@@ -97,6 +100,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/Features/5
+        // Delete a feature
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFeature([FromRoute] int id)
         {
@@ -117,6 +121,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(feature);
         }
 
+        // Check if a feature exists
         private bool FeatureExists(int id)
         {
             return _context.Features.Any(e => e.FeatureId == id);

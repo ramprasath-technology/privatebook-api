@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data.DTO
 {
+    // Class for coordinates
     public class Coordinates
     {
         public double Latitude { get; set; }

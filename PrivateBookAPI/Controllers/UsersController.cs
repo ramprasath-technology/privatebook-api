@@ -25,6 +25,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Users
+        // Get all users
         [HttpGet]
         public IEnumerable<User> GetUsers()
         {
@@ -32,6 +33,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Users/5
+        // Get user by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] int id)
         {
@@ -51,6 +53,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // PUT: api/Users/5
+        // Update user
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
         {
@@ -86,6 +89,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Users
+        // Create a new user
         [HttpPost]
         public async Task<IActionResult> PostUser([FromBody] User user)
         {
@@ -94,6 +98,13 @@ namespace PrivateBookAPI.Controllers
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
+                }
+
+                List<User> checkIfExists = _context.Users.Where(x => x.Email == user.Email).ToList();
+
+                if (checkIfExists.Count != 0)
+                {
+                    return this.Ok("Already exists");
                 }
 
                 MD5 md5Hash = MD5.Create();
@@ -113,6 +124,7 @@ namespace PrivateBookAPI.Controllers
             
         }
 
+        // Get user by email
         [HttpGet("EmailVerification/{email}", Name = "GetUserByEmail")]
         public async Task<IActionResult> GetUserByEmail([FromRoute] string email)
         {
@@ -126,6 +138,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok(user);
         }
 
+        // Get security question
         [HttpGet("SecurityQuestion/{id}", Name = "GetSecurityQuestion")]
         public async Task<IActionResult> GetSecurityQuestion([FromRoute] int id)
         {
@@ -139,6 +152,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok(user.SecurityQuestion);
         }
 
+        // Reset password
         [HttpPost("PasswordReset", Name = "ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] PasswordReset password)
         {
@@ -163,6 +177,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/Users/5
+        // Delete a user
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
@@ -183,11 +198,13 @@ namespace PrivateBookAPI.Controllers
             return Ok(user);
         }
 
+        // Check if user exists
         private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
         }
 
+        //Log in user
         [HttpPost("Login", Name = "LoginUser")]
         public async Task<IActionResult> LoginUser([FromBody] Login login)
         {
@@ -213,6 +230,7 @@ namespace PrivateBookAPI.Controllers
                 return this.Ok(-1);
         }
 
+        //Has using MD5 algorithm
         private string GetMd5Hash(MD5 md5Hash, string input)
         {
 

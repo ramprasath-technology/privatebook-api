@@ -22,6 +22,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Events
+        // Get events for user
         [HttpGet]
         public IEnumerable<Event> GetEvents()
         {
@@ -29,6 +30,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Events/5
+        // Get event by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEvent([FromRoute] int id)
         {
@@ -48,6 +50,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // PUT: api/Events/5
+        // Update event
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEvent([FromRoute] int id, [FromBody] Event @event)
         {
@@ -83,6 +86,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Events
+        // Save new event
         [HttpPost]
         public async Task<IActionResult> PostEvent([FromBody] Event @event)
         {
@@ -90,7 +94,7 @@ namespace PrivateBookAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             _context.Events.Add(@event);
             await _context.SaveChangesAsync();
 
@@ -98,6 +102,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/Events/5
+        // Delete an event
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent([FromRoute] int id)
         {
@@ -118,6 +123,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(@event);
         }
 
+        //Get all events for user
         [HttpGet("user/{userId}", Name = "GetEventsByUser")]
         public async Task<IActionResult> GetEventsByUser(int userId)
         {
@@ -131,6 +137,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(events);
         }
 
+        //Search events for user
         [HttpGet("search/{startDate}/{endDate}/{userId}", Name = "SearchEvents")]
         public async Task<IActionResult> SearchEvents(DateTime startDate, DateTime endDate, int userId)
         {
@@ -138,12 +145,13 @@ namespace PrivateBookAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            //var events = await _context.Events.Where(x => x.UserId == searchTerm.UserId && x.Time >= searchTerm.StartDate && x.Time <= searchTerm.EndDate).ToListAsync();
-            var events = await _context.Events.Where(x => x.UserId == userId).ToListAsync();
+            var events = await _context.Events.Where(x => x.UserId == userId && x.Time >= startDate && x.Time <= endDate).ToListAsync();
+            //var events = await _context.Events.Where(x => x.UserId == userId).ToListAsync();
 
             return Ok(events);
         }
 
+        //Check if event exists
         private bool EventExists(int id)
         {
             return _context.Events.Any(e => e.EventId == id);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data
 {
+    // Class for event
     public class Event
     {
         public int EventId { get; set; }

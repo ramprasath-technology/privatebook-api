@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data.DTO
 {
+    // Class for event search
     public class EventSearchTerms
     {
         public int UserId { get; set; }

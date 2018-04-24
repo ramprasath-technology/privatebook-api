@@ -21,6 +21,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Diaries
+        // Get all diary entries
         [HttpGet]
         public IEnumerable<Diary> GetDiary()
         {
@@ -28,6 +29,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Diaries/5
+        // Get diary entry by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDiary([FromRoute] int id)
         {
@@ -82,6 +84,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Diaries
+        //Submit a new diary entry
         [HttpPost]
         public async Task<IActionResult> PostDiary([FromBody] Diary diary)
         {
@@ -117,6 +120,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(diary);
         }
 
+        //Get diary entries for a particular user
         [HttpGet("GetDiaryEntriesByUser/{userId}", Name = "GetEntriesByUser")]
         public async Task<IActionResult> GetEntriesByUser([FromRoute] int userId)
         {
@@ -130,7 +134,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok(diaryEntries);
         }
 
-
+        //Check if diary exists
         private bool DiaryExists(int id)
         {
             return _context.Diary.Any(e => e.EntryId == id);

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data
 {
+    // Class for login
     public class Login
     {
         public string Email { get; set; }

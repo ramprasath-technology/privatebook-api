@@ -26,6 +26,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Stocks
+        // Get all stocks
         [HttpGet]
         public IEnumerable<Stock> GetStocks()
         {
@@ -33,6 +34,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/Stocks/5
+        // Get stock by id
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStock([FromRoute] int id)
         {
@@ -52,6 +54,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // PUT: api/Stocks/5
+        // Update stock
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStock([FromRoute] int id, [FromBody] Stock stock)
         {
@@ -87,6 +90,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/Stocks
+        // Add a new stock
         [HttpPost]
         public async Task<IActionResult> PostStock([FromBody] Stock stock)
         {
@@ -108,6 +112,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/Stocks/5
+        // Delete a stock
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStock([FromRoute] int id)
         {
@@ -128,7 +133,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(stock);
         }
 
-         
+        // Get stock details by symbol 
         [HttpGet("StockValue/{symbol}", Name = "GetStockDetails")]
         public async Task<IActionResult> GetStockDetails(string symbol)
         {
@@ -154,6 +159,7 @@ namespace PrivateBookAPI.Controllers
             return this.BadRequest();
         }
 
+        //Get stocks for user
         [HttpGet("StocksForUser/{userId}", Name = "GetStockByUser")]
         public async Task<IActionResult> GetStockByUser(int userId)
         {
@@ -167,6 +173,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok(stocks);
         }
 
+        //Check if a stock exists
         private bool StockExists(int id)
         {
             return _context.Stocks.Any(e => e.StockMappingId == id);

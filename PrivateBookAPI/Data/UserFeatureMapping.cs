@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data
 {
+    // Class for user-feature mapping
     public class UserFeatureMapping
     {
         [Key]

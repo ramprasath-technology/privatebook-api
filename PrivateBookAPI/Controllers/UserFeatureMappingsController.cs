@@ -22,6 +22,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/UserFeatureMappings
+        // Get all feature mappings
         [HttpGet]
         public IEnumerable<UserFeatureMapping> GetUserFeatureMappings()
         {
@@ -29,6 +30,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // GET: api/UserFeatureMappings/5
+        // Get user feature mapping
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserFeatureMapping([FromRoute] int id)
         {
@@ -48,6 +50,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // PUT: api/UserFeatureMappings/5
+        // Update a mapping
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserFeatureMapping([FromRoute] int id, [FromBody] UserFeatureMapping userFeatureMapping)
         {
@@ -83,6 +86,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // POST: api/UserFeatureMappings
+        // Create a new mapping
         [HttpPost]
         public async Task<IActionResult> PostUserFeatureMapping([FromBody] UserFeatureMapping userFeatureMapping)
         {
@@ -105,6 +109,7 @@ namespace PrivateBookAPI.Controllers
         }
 
         // DELETE: api/UserFeatureMappings/5
+        // Delete a particular mapping
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserFeatureMapping([FromRoute] int id)
         {
@@ -125,6 +130,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(userFeatureMapping);
         }
 
+        // Get features for a user
         [HttpGet("GetFeatureByUser/{userId}", Name = "GetFeaturesByUser")]
         public async Task<IActionResult> GetFeaturesByUser(int userId)
         {
@@ -133,6 +139,7 @@ namespace PrivateBookAPI.Controllers
             return Ok(features);
         }
 
+        // Add all features for a user
         [HttpGet("AddFeaturesToUser/{userId}", Name = "AddFeaturesToUser")]
         public async Task<IActionResult> AddFeaturesToUser(int userId)
         {
@@ -151,6 +158,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok();
         }
 
+        // Add feature to user
         [HttpPost("UserFeatureToAdd", Name = "AddFeatureToUser")]
         public async Task<IActionResult> AddFeatureToUser([FromBody] UserFeatures userFeature)
         {
@@ -165,6 +173,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok();
         }
 
+        //Remove feature for a user
         [HttpPost("UserFeatureToRemove", Name = "RemoveFeatureForUser")]
         public async Task<IActionResult> RemoveFeatureForUser([FromBody] UserFeatures userFeature)
         {
@@ -179,6 +188,7 @@ namespace PrivateBookAPI.Controllers
             return this.Ok();
         }
 
+        //Check if mapping exists
         private bool UserFeatureMappingExists(int id)
         {
             return _context.UserFeatureMappings.Any(e => e.MappingId == id);

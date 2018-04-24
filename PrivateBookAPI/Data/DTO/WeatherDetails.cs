@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace PrivateBookAPI.Data.DTO
 {
+    // Class for weather details
     public class WeatherDetails
     {
         public string Temperature { get; set; }
